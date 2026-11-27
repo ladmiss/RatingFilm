@@ -82,7 +82,7 @@ class Page:
         canvas.rect(0, 0, WIDTH, HEIGHT, stroke=0, fill=1)
         canvas.setFillColor(colors.HexColor(GREEN))
         canvas.setFont("Bold", 8.5)
-        canvas.drawString(LEFT, HEIGHT - 36, "ВЕС ГОЛОСА")
+        canvas.drawString(LEFT, HEIGHT - 36, "РейтингФильм")
         canvas.setFont("Text", 8.5)
         canvas.drawRightString(WIDTH - LEFT, HEIGHT - 36, label)
         self.line(47)
@@ -149,7 +149,7 @@ class Page:
         self.line(HEIGHT - 39)
         self.canvas.setFont("Text", 8)
         self.canvas.setFillColor(colors.HexColor(MUTED))
-        self.canvas.drawString(LEFT, 23, "ФильмРейтинг   /   основной эксперимент")
+        self.canvas.drawString(LEFT, 23, "РейтингФильм   /   основной эксперимент")
         self.canvas.drawRightString(WIDTH - LEFT, 23, f"{self.canvas.getPageNumber()} / 4")
         self.canvas.showPage()
 
@@ -170,12 +170,12 @@ def main():
     split = read("split.csv")
 
     canvas = Canvas(str(ROOT / "film-rating.pdf"), pagesize=A4, pageCompression=1, invariant=1)
-    canvas.setTitle("Вес голоса · ФильмРейтинг")
-    canvas.setAuthor("ФильмРейтинг")
+    canvas.setTitle("РейтингФильм")
+    canvas.setAuthor("РейтингФильм")
     canvas.setSubject("Рейтинг фильмов и точность прогноза зрительских оценок")
 
     p = Page(canvas, "Данные и исследовательский вопрос")
-    p.text("Вес голоса", font="Display", size=38, color=GREEN, bottom=0)
+    p.text("РейтингФильм", font="Display", size=38, color=GREEN, bottom=0)
     p.text("Сколько стоит одна пятёрка?", font="Display", size=21, bottom=16)
     p.callout(f"У фильма «{escape(top_raw['title'])}» средний балл {number(top_raw['raw_mean'],2)} "
               f"по одной оценке. У фильма «{escape(winner['title'])}» средний балл "
