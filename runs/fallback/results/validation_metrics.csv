@@ -1,0 +1,10 @@
+﻿group,method,n_events,rmse,mae,status,alpha,selected
+Все,global_mean,599,1.139314078,0.9549128644,ok,5,True
+Все,movie_mean,599,0.9902826032,0.8244478487,ok,5,True
+Все,smoothed_mean,599,0.9989510365,0.8330530419,ok,5,True
+Все,global_mean,599,1.139314078,0.9549128644,ok,20,False
+Все,movie_mean,599,0.9902826032,0.8244478487,ok,20,False
+Все,smoothed_mean,599,1.022786727,0.8516906778,ok,20,False
+Все,global_mean,599,1.139314078,0.9549128644,ok,50,False
+Все,movie_mean,599,0.9902826032,0.8244478487,ok,50,False
+Все,smoothed_mean,599,1.052172263,0.8744673586,ok,50,False

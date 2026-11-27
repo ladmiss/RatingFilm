@@ -1,0 +1,3 @@
+﻿rating_id,user_id,movie_id,timestamp,rating,n_ratings,global_mean,movie_mean,smoothed_mean,group,gain,title
+14604,221,67,2025-11-15,3,2,3.225862822,5,3.732759159,1–9,1.267240841,Соль на карте
+13244,278,181,2025-12-17,1.5,6,3.225862822,2,2.557210374,1–9,-0.5572103737,Ключ от почтамта

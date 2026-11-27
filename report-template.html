@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>
+      Вес голоса · ФильмРейтинг
+    </title>
+    <style>
+      :root {
+        --ink: #20231f;
+        --paper: #faf9f3;
+        --line: #d4d5ca;
+        --green: #065846;
+        --rust: #a94329;
+        --dim: #53594f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 22px;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font: 16px/1.55 "Inter", "Segoe UI", sans-serif;
+      }
+
+      main, header, footer {
+        max-width: 1190px;
+        margin: 0 auto;
+        padding: 0 clamp(18px, 4vw, 64px);
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 76px;
+        border-bottom: 1px solid var(--line);
+        gap: 20px;
+      }
+
+      header strong {
+        font-family: Georgia, serif;
+        font-size: 24px;
+      }
+
+      nav {
+        display: flex;
+        gap: 22px;
+      }
+
+      a {
+        color: var(--green);
+        text-underline-offset: 4px;
+      }
+
+      nav a {
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: clamp(24px, 5vw, 74px);
+        align-items: center;
+        padding: 65px 0 50px;
+      }
+
+      h1, h2, h3 {
+        font-family: "PT Serif", Georgia, serif;
+        line-height: 1.08;
+        font-weight: normal;
+        letter-spacing: -.035em;
+        margin: 0 0 16px;
+      }
+
+      h1 {
+        font-size: clamp(48px, 6.5vw, 82px);
+      }
+
+      h2 {
+        font-size: clamp(34px, 4vw, 50px);
+      }
+
+      h3 {
+        font-size: 27px;
+      }
+
+      p {
+        margin: 0 0 16px;
+        max-width: 78ch;
+      }
+
+      .lead {
+        font-size: 20px;
+        color: var(--dim);
+        max-width: 44ch;
+      }
+
+      .figures {
+        font-size: 14px;
+        color: var(--dim);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .ticket {
+        background: var(--green);
+        color: #fff9e8;
+        padding: 24px 30px;
+        border-radius: 3px 3px 17px 3px;
+      }
+
+      .ticket > div + div {
+        border-top: 1px dashed #a9c5ac;
+        margin-top: 20px;
+        padding-top: 19px;
+      }
+
+      .ticket small {
+        color: #c5deca;
+        display: block;
+        margin-bottom: 7px;
+      }
+
+      .film {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: baseline;
+      }
+
+      .film strong {
+        font: 26px/1.15 Georgia, serif;
+      }
+
+      .film b {
+        font-size: 30px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .ticket span {
+        font-size: 13px;
+      }
+
+      section {
+        border-top: 1px solid var(--line);
+        padding: 43px 0;
+      }
+
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      select, input[type=search] {
+        width: 100%;
+        padding: 9px 10px;
+        margin-top: 5px;
+        border: 1px solid #a3ab9b;
+        border-radius: 5px;
+        font: inherit;
+        background: white;
+        color: var(--ink);
+      }
+
+      .two {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 28px;
+        align-items: start;
+      }
+
+      .filters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .scroll {
+        overflow-x: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-variant-numeric: tabular-nums;
+        font-size: 14px;
+        margin: 7px 0 14px;
+      }
+
+      th, td {
+        text-align: left;
+        padding: 9px 8px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      th {
+        font-size: 12px;
+        color: #455046;
+        background: #eeeee5;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      td:first-child, th:first-child {
+        padding-left: 7px;
+      }
+
+      .detail {
+        background: #e6eee4;
+        border-radius: 7px;
+        padding: 24px;
+      }
+
+      .detail label {
+        margin: 12px 0;
+      }
+
+      .detail output {
+        float: right;
+        color: var(--green);
+      }
+
+      input[type=range] {
+        width: 100%;
+        accent-color: var(--green);
+      }
+
+      button {
+        font: inherit;
+        cursor: pointer;
+        color: var(--green);
+        border: 1px solid #abb6a9;
+        background: transparent;
+        border-radius: 5px;
+        padding: 6px 13px;
+      }
+
+      button:disabled {
+        opacity: .4;
+        cursor: default;
+      }
+
+      button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+        outline: 3px solid #bd6932;
+        outline-offset: 2px;
+      }
+
+      .pick {
+        border: 0;
+        padding: 0;
+        text-align: left;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .sel {
+        background: #e7eee5;
+      }
+
+      .pages {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        flex-wrap: wrap;
+      }
+
+      .detail dl {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        margin: 14px 0;
+      }
+
+      .detail dt, .detail dd {
+        padding: 4px 0;
+        border-bottom: 1px solid #c5d2c3;
+      }
+
+      .detail dd {
+        margin: 0;
+        font-weight: 650;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .full {
+        background: #f1efe4;
+        border-left: 3px solid var(--rust);
+        padding: 14px 18px;
+        margin: 16px 0;
+      }
+
+      .muted {
+        color: var(--dim);
+        font-size: 14px;
+      }
+
+      .plot {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-top: 16px;
+      }
+
+      details {
+        margin: 15px 0;
+      }
+
+      summary {
+        cursor: pointer;
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      .panel {
+        min-width: 0;
+      }
+
+      footer {
+        padding-top: 16px;
+        padding-bottom: 28px;
+        font-size: 13px;
+        color: var(--dim);
+      }
+
+      @media (max-width:760px) {
+        header {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 4px;
+          padding-top: 12px;
+          padding-bottom: 12px;
+        }
+
+        nav {
+          gap: 16px;
+        }
+
+        .hero, .two {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          padding: 35px 0;
+          gap: 16px;
+        }
+
+        .ticket {
+          padding: 15px 19px;
+        }
+
+        .ticket > div + div {
+          margin-top: 10px;
+          padding-top: 9px;
+        }
+
+        .filters {
+          grid-template-columns: 1fr;
+        }
+
+        section {
+          padding: 30px 0;
+        }
+
+        .lead {
+          font-size: 17px;
+        }
+
+      }
+
+      @media print {
+        nav, button, .filters, input[type=range] {
+          display: none;
+        }
+
+        .hero, .two {
+          display: block;
+        }
+
+        .ticket, .detail {
+          color: #111;
+          background: white;
+          border: 1px solid #aaa;
+        }
+
+        .ticket small {
+          color: #333;
+        }
+
+        section {
+          break-inside: auto;
+        }
+
+        h2, h3 {
+          break-after: avoid;
+        }
+
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>
+        Вес голоса
+      </strong>
+      <nav aria-label="Разделы отчёта">
+        <a href="#catalog">
+          Рейтинги
+        </a>
+        <a href="#test">
+          Прогноз
+        </a>
+        <a href="#spread">
+          Разброс ошибок
+        </a>
+      </nav>
+    </header>
+    <main>
+      <div class="hero">
+        <div>
+          <h1>
+            Сколько стоит одна пятёрка?
+          </h1>
+          <p class="lead">
+            Фильм с одним восторженным зрителем может возглавить весь топ. Как меняется рейтинг,
+            если учитывать число голосов?
+          </p>
+          <p class="figures">
+            $film_count фильмов · $user_count зрителей · $event_count синтетических оценок
+          </p>
+        </div>
+        <aside class="ticket" aria-label="Сравнение лидеров">
+          <div>
+            <small>
+              Лучший по среднему среди фильмов с 1–9 голосами
+            </small>
+            <div class="film">
+              <strong>
+                $sample
+              </strong>
+              <b>
+                $initial_score
+              </b>
+            </div>
+            <span>
+              Голосов в обучении — $initial_n
+            </span>
+          </div>
+          <div>
+            <small>
+              Лидер после сглаживания
+            </small>
+            <div class="film">
+              <strong>
+                $winner
+              </strong>
+              <b>
+                $winner_score
+              </b>
+            </div>
+            <span>
+              Голосов в обучении — $winner_n
+            </span>
+          </div>
+        </aside>
+      </div>
+      <section id="catalog">
+        <h2>
+          Четыре способа собрать топ
+        </h2>
+        <p>
+          Выберите фильм в таблице. Ползунок покажет, как дополнительные условные голоса со средним
+          баллом каталога меняют его балл и место.
+        </p>
+        <div class="two">
+          <div class="panel">
+            <div class="filters">
+              <label>
+                Сортировка
+                <select id="sort">
+                  <option value="raw">
+                    Средний балл
+                  </option>
+                  <option value="popular">
+                    Число голосов
+                  </option>
+                  <option value="threshold">
+                    Средний при 20+ голосах
+                  </option>
+                  <option value="smooth">
+                    Сглаженный балл
+                  </option>
+                </select>
+              </label>
+              <label>
+                Название фильма
+                <input type="search" id="search" placeholder="Найти в рейтинге">
+              </label>
+            </div>
+            <div class="scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      Место
+                    </th>
+                    <th>
+                      Фильм
+                    </th>
+                    <th>
+                      Голосов
+                    </th>
+                    <th>
+                      Балл
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="rows">
+                </tbody>
+              </table>
+            </div>
+            <div class="pages">
+              <button id="prev" aria-label="Предыдущая страница">
+                Назад
+              </button>
+              <span id="count" aria-live="polite">
+              </span>
+              <button id="next" aria-label="Следующая страница">
+                Дальше
+              </button>
+            </div>
+          </div>
+          <aside class="detail">
+            <div class="muted" id="genre">
+            </div>
+            <h3 id="title">
+            </h3>
+            <label for="alpha">
+              Сила сглаживания, α
+              <output for="alpha" id="av">
+              </output>
+            </label>
+            <input id="alpha" type="range" min="0" max="50" step="1" value="$alpha">
+            <dl id="stats">
+            </dl>
+            <p id="formula" class="muted">
+            </p>
+            <button id="reset">
+              Вернуть α = $alpha
+            </button>
+          </aside>
+        </div>
+        <details>
+          <summary>
+            Посмотреть все фильмы на графике
+          </summary>
+          <img class="plot" src="data:image/png;base64,$graphic" alt="Средний и сглаженный баллы в зависимости от числа голосов">
+        </details>
+      </section>
+      <section id="test">
+        <h2>
+          Какая оценка ближе к следующей?
+        </h2>
+        <div class="two">
+          <div class="panel">
+            <p>
+              События разделены по датам. На валидации сравнивались три значения α. Для итогового
+              теста выбран α = $alpha. Ползунок выше меняет только иллюстрацию.
+            </p>
+            <p class="muted">
+              Обучение / валидация / тест — $split.
+              <br>
+              RMSE на валидации · $calibration.
+            </p>
+          </div>
+          <div class="panel">
+            $metrics
+            <p class="muted">
+              MAE — средний промах в баллах. RMSE сильнее учитывает большие промахи. Для обеих
+              метрик меньшее значение лучше.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="spread">
+        <h2>
+          Насколько устойчив выигрыш?
+        </h2>
+        <p>
+          Δ RMSE — ошибка сглаженного рейтинга минус ошибка обычного. Отрицательная разница
+          означает, что сглаживание помогло.
+        </p>
+        $intervals
+        <p class="full">
+          $interpretation
+        </p>
+        <details>
+          <summary>
+            Как получен интервал
+          </summary>
+          <p>
+            Для каждой группы построено $repeats повторных выборок. В каждой с возвращением выбрано
+            столько фильмов, сколько их было в этой группе. Внутри каждой выборки сохранялись все
+            тестовые оценки выбранных фильмов и парные прогнозы обоих методов. Границы — процентили
+            2,5% и 97,5% разницы RMSE. Расчёт условен на фиксированные прогнозы, учитывает
+            группировку по фильмам и не моделирует зависимость между фильмами из-за общих зрителей.
+          </p>
+        </details>
+        <h3>
+          Два крайних случая
+        </h3>
+        <p>
+          Среди оценок фильмов с 1–9 прошлыми голосами взяты события с максимальным и минимальным
+          выигрышем в абсолютной ошибке. Они показывают, кому помогло сглаживание в конкретном
+          случае.
+        </p>
+        $examples
+        <p class="muted">
+          Выигрыш равен абсолютной ошибке обычного прогноза минус абсолютная ошибка сглаженного.
+          Знак у этой величины противоположен знаку улучшения Δ RMSE.
+        </p>
+      </section>
+    </main>
+    <footer>
+      <p>
+        Форма сглаживания встречается в расчёте позиций IMDb Top 250. Здесь силу сглаживания
+        выбирает валидация.
+        <a href="https://help.imdb.com/article/imdb/track-movies-tv/faq-for-imdb-votes/G67Y87TFYYP6TWAV">
+          Формула IMDb
+        </a>
+      </p>
+      <p>
+        Для проверки по времени каждый следующий период получает только прошлые данные.
+        <a href="https://otexts.com/fpp3/tscv.html">
+          Hyndman и Athanasopoulos, раздел 5.10
+        </a>
+      </p>
+      Данные вымышлены. Популярность задаёт шанс получить голос, а оценка складывается из базового
+      балла фильма, привычки зрителя и шума.
+    </footer>
+    <script id="dataset" type="application/json">$data</script>
+    <script>
+      "use strict";
+
+      const data = JSON.parse(document.getElementById("dataset").textContent);
+      const pageSize = 8;
+      let selectedMovieId = data.initial;
+      let page = 0;
+
+      function element(id) {
+        return document.getElementById(id);
+      }
+
+      function formatScore(value, digits = 2) {
+        if (value === null) return "—";
+        return value.toLocaleString("ru-RU", {
+          minimumFractionDigits: digits,
+          maximumFractionDigits: digits
+        });
+      }
+
+      function rawScore(movie) {
+        return movie.n_ratings ? movie.rating_sum / movie.n_ratings : null;
+      }
+
+      function smoothedScore(movie, alpha) {
+        // Для фильма без голосов прогноз равен общему среднему при любом α, включая ноль.
+        if (movie.n_ratings === 0) return data.mean;
+        return (movie.rating_sum + alpha * data.mean) / (movie.n_ratings + alpha);
+      }
+
+      // Суммы оценок с шагом 0,5 записаны в JSON точно. Сортируем до округления для экрана.
+      function rankBy(movies, score) {
+        return [...movies].sort((left, right) => {
+          const difference = score(right) - score(left);
+          return difference || left.movie_id - right.movie_id;
+        });
+      }
+
+      const rawRanking = rankBy(data.movies.filter(movie => movie.n_ratings > 0), rawScore);
+      const thresholdRanking = rawRanking.filter(movie => movie.n_ratings >= 20);
+      const popularityRanking = rankBy(data.movies, movie => movie.n_ratings);
+
+      function renderTable(ranking, mode, alpha) {
+        const query = element("search").value.trim().toLocaleLowerCase("ru");
+        // Позиция относится ко всему рейтингу, даже когда поиск скрывает соседние строки.
+        const matches = ranking
+          .map((movie, index) => ({movie, rank: index + 1}))
+          .filter(entry => entry.movie.title.toLocaleLowerCase("ru").includes(query));
+
+        const pageCount = Math.max(1, Math.ceil(matches.length / pageSize));
+        page = Math.max(0, Math.min(page, pageCount - 1));
+        const start = page * pageSize;
+        const end = Math.min(start + pageSize, matches.length);
+        const body = element("rows");
+        body.replaceChildren();
+
+        for (const {movie, rank} of matches.slice(start, end)) {
+          const row = body.insertRow();
+          if (movie.movie_id === selectedMovieId) row.className = "sel";
+          row.insertCell().textContent = rank;
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "pick";
+          button.textContent = movie.title;
+          button.onclick = () => {
+            selectedMovieId = movie.movie_id;
+            render();
+            body.querySelector(".sel button")?.focus();
+          };
+          row.insertCell().append(button);
+
+          row.insertCell().textContent = movie.n_ratings;
+          const value = mode === "smooth" ? smoothedScore(movie, alpha) : rawScore(movie);
+          row.insertCell().textContent = formatScore(value);
+        }
+
+        element("count").textContent = matches.length
+          ? (start + 1) + "–" + end + " из " + matches.length
+          : "Совпадений нет";
+        element("prev").disabled = page === 0;
+        element("next").disabled = page + 1 >= pageCount;
+      }
+
+      function renderMovie(movie, smoothedRanking, alpha) {
+        element("title").textContent = movie.title;
+        element("genre").textContent = movie.genre + " · голосов: " + movie.n_ratings;
+        element("av").textContent = alpha;
+
+        const rawRank = rawRanking.indexOf(movie) + 1;
+        const score = smoothedScore(movie, alpha);
+        const entries = [
+          ["Обычный балл", formatScore(rawScore(movie))],
+          ["После сглаживания", formatScore(score)],
+          ["Место в обычном топе", rawRank || "—"],
+          ["Место после сглаживания", smoothedRanking.indexOf(movie) + 1]
+        ];
+
+        const stats = element("stats");
+        stats.replaceChildren();
+        for (const [label, value] of entries) {
+          const term = document.createElement("dt");
+          const description = document.createElement("dd");
+          term.textContent = label;
+          description.textContent = value;
+          stats.append(term, description);
+        }
+
+        const formula = element("formula");
+        if (movie.n_ratings === 0) {
+          formula.textContent = "Пока голосов нет, прогноз равен общему среднему " + formatScore(data.mean) + ".";
+        } else {
+          const numerator = formatScore(movie.rating_sum, 1) + " + " + alpha + " × " + formatScore(data.mean, 3);
+          formula.textContent = "(" + numerator + ") / (" + movie.n_ratings + " + " + alpha + ") ≈ " + formatScore(score);
+        }
+      }
+
+      function render() {
+        const alpha = Number(element("alpha").value);
+        const mode = element("sort").value;
+        const smoothedRanking = rankBy(data.movies, movie => smoothedScore(movie, alpha));
+        const rankings = {
+          popular: popularityRanking,
+          raw: rawRanking,
+          threshold: thresholdRanking,
+          smooth: smoothedRanking
+        };
+        renderTable(rankings[mode], mode, alpha);
+        renderMovie(data.movies.find(movie => movie.movie_id === selectedMovieId), smoothedRanking, alpha);
+      }
+
+      function resetPage() {
+        page = 0;
+        render();
+      }
+
+      element("search").oninput = resetPage;
+      element("sort").onchange = resetPage;
+      element("alpha").oninput = render;
+      element("reset").onclick = () => {
+        element("alpha").value = data.alpha;
+        render();
+      };
+      element("prev").onclick = () => {
+        page -= 1;
+        render();
+      };
+      element("next").onclick = () => {
+        page += 1;
+        render();
+      };
+
+      render();
+    </script>
+  </body>
+</html>
